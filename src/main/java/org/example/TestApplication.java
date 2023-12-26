@@ -6,6 +6,7 @@ public class TestApplication {
         if (!clientType.equals("ManagerClient"))
             return;
         ManagerClient managerClient = new ManagerClient();
-        managerClient.showOccupiedRooms();
+        String currentDate = "2024-01-04";
+        managerClient.showOccupiedRooms(currentDate);
     }
 }

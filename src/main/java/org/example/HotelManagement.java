@@ -18,11 +18,11 @@ public class HotelManagement {
     }
 
     // 현재 점유된 객실 조회
-    public List<String> getOccupiedRooms() {
+    public List<String> getOccupiedRooms(String currentDate) {
         String sql = "SELECT r.room_id, r.type, res.customer_id, res.start_date, res.end_date " +
                 "FROM room r " +
                 "JOIN reservation res ON r.room_id = res.room_id " +
-                "WHERE '2024-01-04' BETWEEN res.start_date AND res.end_date " +
+                "WHERE '" + currentDate + "' BETWEEN res.start_date AND res.end_date " +
                 "AND res.status = 'Confirmed'";
 
         List<String> occupiedRooms = new ArrayList<>();
@@ -30,14 +30,16 @@ public class HotelManagement {
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
+            conn.setAutoCommit(false);
 
             while (rs.next()) {
                 String roomDetails = "Room ID: " + rs.getInt("room_id") +
                         ", Type: " + rs.getString("type") +
                         ", Customer ID: " + rs.getInt("customer_id") +
-                        ", Date: " + rs.getDate("start_date") + " ~ " + rs.getDate("end_date") + "\n";
+                        ", Date: " + rs.getDate("start_date") + " ~ " + rs.getDate("end_date");
                 occupiedRooms.add(roomDetails);
             }
+            conn.commit();
         } catch (SQLException e) {
             System.out.println("Error retrieving occupied rooms.");
             e.printStackTrace();
