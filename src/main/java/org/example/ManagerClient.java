@@ -10,4 +10,12 @@ public class ManagerClient {
             System.out.println(room);
         }
     }
+
+    public void showHousekeepingAssignments() {
+        HotelManagement management = new HotelManagement();
+        List<String> assignments = management.getHousekeepingAssignments();
+        for (String assignment : assignments) {
+            System.out.println(assignment);
+        }
+    }
 }

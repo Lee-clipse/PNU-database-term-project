@@ -9,4 +9,12 @@ public class TestApplication {
         String currentDate = "2024-01-04";
         managerClient.showOccupiedRooms(currentDate);
     }
+
+    public void housekeepingTest() {
+        String clientType = LoginService.login("manager", "");
+        if (!clientType.equals("ManagerClient"))
+            return;
+        ManagerClient managerClient = new ManagerClient();
+        managerClient.showHousekeepingAssignments();
+    }
 }

@@ -46,4 +46,31 @@ public class HotelManagement {
         }
         return occupiedRooms;
     }
+
+    // housekeeping 업무 할당 조회
+    public List<String> getHousekeepingAssignments() {
+        String sql = "SELECT h.housekeeping_id, h.room_id, h.date, h.status " +
+                "FROM housekeeping h";
+
+        List<String> housekeepingAssignments = new ArrayList<>();
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            conn.setAutoCommit(false);
+
+            while (rs.next()) {
+                String assignmentDetails = "Housekeeping ID: " + rs.getInt("housekeeping_id") +
+                        ", Room ID: " + rs.getInt("room_id") +
+                        ", Date: " + rs.getDate("date") +
+                        ", Status: " + rs.getString("status");
+                housekeepingAssignments.add(assignmentDetails);
+            }
+            conn.commit();
+        } catch (SQLException e) {
+            System.out.println("Error retrieving housekeeping assignments.");
+            e.printStackTrace();
+        }
+        return housekeepingAssignments;
+    }
 }
