@@ -14,7 +14,9 @@ public class HotelManagement {
         String url = "jdbc:postgresql://localhost:5432/postgres";
         String user = "postgres";
         String password = "jin24564";
-        return DriverManager.getConnection(url, user, password);
+        Connection conn = DriverManager.getConnection(url, user, password);
+        conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+        return conn;
     }
 
     // 현재 점유된 객실 조회
