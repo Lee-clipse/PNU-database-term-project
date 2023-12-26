@@ -5,6 +5,7 @@ public class Main {
         TestApplication testInstance = new TestApplication();
 //        testInstance.roomsOccupiedTest();
 //        testInstance.housekeepingTest();
-        testInstance.roomsAvailableTest();
+//        testInstance.roomsAvailableTest();
+        testInstance.costAtCheckoutTest();
     }
 }

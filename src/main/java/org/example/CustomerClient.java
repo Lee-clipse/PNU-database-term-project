@@ -10,4 +10,10 @@ public class CustomerClient {
             System.out.println(room);
         }
     }
+
+    public void showCostAtCheckout (int customerId, String currentDate) {
+        HotelManagement management = new HotelManagement();
+        double totalCost = management.calculateCostAtCheckout(customerId, currentDate);
+        System.out.println("(Customer ID " + customerId + ") Total cost at checkout: " + totalCost);
+    }
 }

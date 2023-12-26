@@ -96,11 +96,35 @@ public class HotelManagement {
                 availableRooms.add(roomDetails);
             }
             conn.commit();
-
         } catch (SQLException e) {
             System.out.println("Error retrieving available rooms.");
             e.printStackTrace();
         }
         return availableRooms;
+    }
+
+    // 체크아웃 시 고객의 총 비용 계산
+    public double calculateCostAtCheckout(int customerId, String currentDate) {
+        String sql = "SELECT SUM(r.cost * (res.end_date - res.start_date)) AS total_cost " +
+                "FROM reservation res " +
+                "JOIN room r ON res.room_id = r.room_id " +
+                "WHERE res.customer_id = " + customerId +" AND '" + currentDate + "' >= res.end_date";
+
+        double totalCost = 0.0;
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            conn.setAutoCommit(false);
+
+            if (rs.next()) {
+                totalCost = rs.getDouble("total_cost");
+            }
+            conn.commit();
+        } catch (SQLException e) {
+            System.out.println("Error calculating cost at checkout.");
+            e.printStackTrace();
+        }
+        return totalCost;
     }
 }
