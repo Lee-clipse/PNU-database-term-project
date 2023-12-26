@@ -73,4 +73,34 @@ public class HotelManagement {
         }
         return housekeepingAssignments;
     }
+
+    // 이용 가능한 객실 조회
+    public List<String> getAvailableRooms(String currentDate) {
+        String sql = "SELECT r.room_id, r.type, r.cost " +
+                "FROM room r " +
+                "LEFT JOIN reservation res ON r.room_id = res.room_id " +
+                "AND '" + currentDate + "' BETWEEN res.start_date AND res.end_date " +
+                "WHERE res.reservation_id IS NULL";
+
+        List<String> availableRooms = new ArrayList<>();
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            conn.setAutoCommit(false);
+
+            while (rs.next()) {
+                String roomDetails = "Room ID: " + rs.getInt("room_id") +
+                        ", Type: " + rs.getString("type") +
+                        ", Cost: " + rs.getDouble("cost");
+                availableRooms.add(roomDetails);
+            }
+            conn.commit();
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving available rooms.");
+            e.printStackTrace();
+        }
+        return availableRooms;
+    }
 }
