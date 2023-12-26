@@ -108,7 +108,7 @@ public class HotelManagement {
         String sql = "SELECT SUM(r.cost * (res.end_date - res.start_date)) AS total_cost " +
                 "FROM reservation res " +
                 "JOIN room r ON res.room_id = r.room_id " +
-                "WHERE res.customer_id = " + customerId +" AND '" + currentDate + "' >= res.end_date";
+                "WHERE res.customer_id = " + customerId + " AND '" + currentDate + "' >= res.end_date";
 
         double totalCost = 0.0;
 
@@ -126,5 +126,36 @@ public class HotelManagement {
             e.printStackTrace();
         }
         return totalCost;
+    }
+
+    // 고객의 미래 예약 목록 조회
+    public List<String> getMyReservations(int customerId, String currentDate) {
+        String sql = "SELECT res.reservation_id, r.room_id, r.type, res.start_date, res.end_date, res.status " +
+                "FROM reservation res " +
+                "JOIN room r ON res.room_id = r.room_id " +
+                "WHERE res.customer_id = " + customerId + " AND res.start_date >= '" + currentDate + "'";
+
+        List<String> myReservations = new ArrayList<>();
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            conn.setAutoCommit(false);
+
+            while (rs.next()) {
+                String reservationDetails = "Reservation ID: " + rs.getInt("reservation_id") +
+                        ", Room ID: " + rs.getInt("room_id") +
+                        ", Type: " + rs.getString("type") +
+                        ", Start Date: " + rs.getDate("start_date") +
+                        ", End Date: " + rs.getDate("end_date") +
+                        ", Status: " + rs.getString("status");
+                myReservations.add(reservationDetails);
+            }
+            conn.commit();
+        } catch (SQLException e) {
+            System.out.println("Error retrieving my reservations.");
+            e.printStackTrace();
+        }
+        return myReservations;
     }
 }

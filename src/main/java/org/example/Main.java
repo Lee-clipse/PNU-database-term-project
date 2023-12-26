@@ -6,6 +6,7 @@ public class Main {
 //        testInstance.roomsOccupiedTest();
 //        testInstance.housekeepingTest();
 //        testInstance.roomsAvailableTest();
-        testInstance.costAtCheckoutTest();
+//        testInstance.costAtCheckoutTest();
+        testInstance.myReservationTest();
     }
 }

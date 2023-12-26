@@ -36,4 +36,14 @@ public class TestApplication {
         String currentDate = "2024-01-04";
         customerClient.showCostAtCheckout(customerId, currentDate);
     }
+
+    public void myReservationTest() {
+        String clientType = LoginService.login("client", "");
+        if (!clientType.equals("CustomerClient"))
+            return;
+        CustomerClient customerClient = new CustomerClient();
+        int customerId = 1;
+        String currentDate = "2024-01-01";
+        customerClient.showMyReservations(customerId, currentDate);
+    }
 }
