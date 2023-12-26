@@ -14,12 +14,11 @@ public class CustomerClient {
     public void showCostAtCheckout (int customerId, String currentDate) {
         HotelManagement management = new HotelManagement();
         double totalCost = management.calculateCostAtCheckout(customerId, currentDate);
-        System.out.println("(Customer ID " + customerId + ") Total cost at checkout: " + totalCost);
+        System.out.println("Total cost at checkout: " + totalCost);
     }
 
     public void showMyReservations(int customerId, String currentDate) {
         HotelManagement management = new HotelManagement();
-        System.out.println("(Customer ID " + customerId + ")");
         List<String> reservations = management.getMyReservations(customerId, currentDate);
         for (String reservation : reservations) {
             System.out.println(reservation);
